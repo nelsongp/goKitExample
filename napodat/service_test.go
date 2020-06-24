@@ -1,8 +1,7 @@
-package napodate
+package napodat
 
 import (
 	"context"
-	"database/sql/driver"
 	"testing"
 	"time"
 )
@@ -21,28 +20,28 @@ func TestStatus(t *testing.T) {
 	}
 }
 
-func TestGet(t *testing.T){
+func TestGet(t *testing.T) {
 	srv, ctx := setup()
 	d, err := srv.Get(ctx)
-	if err != nil{
+	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
-	
+
 	time := time.Now()
 	today := time.Format("02/01/2006")
 
 	//testing today's date
-	ok := today == driver.Bool.String()
-	if != ok{
+	ok := today == d
+	if !ok {
 		t.Errorf("expected dates to be equal")
 	}
 }
 
-func TestValidate(t *testing.T){
+func TestValidate(t *testing.T) {
 	srv, ctx := setup()
 	b, err := srv.Validate(ctx, "31/12/2019")
 	if err != nil {
-		t.Errorf(("Error: %s", err)
+		t.Errorf("Error: %s", err)
 	}
 
 	//testing that te date  is valid
@@ -56,13 +55,13 @@ func TestValidate(t *testing.T){
 		t.Errorf("date should be valid")
 	}
 
-	//testing usa date		
+	//testing usa date
 	b, err = srv.Validate(ctx, "12/31/2019")
 	if !b {
 		t.Errorf("USA date should be valid")
 	}
 }
 
-func setup()(srv Service, ctx context.Context){
+func setup() (srv Service, ctx context.Context) {
 	return NewService(), context.Background()
 }
